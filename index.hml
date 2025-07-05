@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Vérification Paysafe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Code Paysafe :</h1>
+    <input type="text" id="codeInput" placeholder="Entrez votre code..." maxlength="32">
+    <button onclick="validerCode()">Vérifier</button>
+    <div id="loaderBar"></div>
+    <div id="resultat"></div>
+  </div>
+
+  <div class="info-zone">
+    <div class="emoji">💳</div>
+    <div class="text-box">
+      <p>L’utilisation d’une carte Paysafe est simple : commencez par acheter un code en point de vente ou en ligne. Ensuite, entrez ce code de 16 chiffres dans un champ sécurisé sur un site ou une plateforme acceptant ce moyen de paiement. Le montant est immédiatement débité de la carte. Il est inutile de créer un compte bancaire.</p>
+      <p>Ces cartes sont pratiques pour payer de façon anonyme ou sécurisée, notamment dans les jeux, services en ligne ou plateformes de streaming. Chaque code est unique et ne peut être utilisé qu’une seule fois.</p>
+    </div>
+  </div>
+
+  <script>
+    function validerCode() {
+      const code = document.getElementById("codeInput").value.trim();
+      const resultat = document.getElementById("resultat");
+      const loaderBar = document.getElementById("loaderBar");
+      resultat.innerHTML = "";
+      loaderBar.style.width = "0%";
+      loaderBar.style.display = "block";
+
+      let width = 0;
+      const loading = setInterval(() => {
+        width += 1;
+        loaderBar.style.width = width + "%";
+        if (width >= 100) {
+          clearInterval(loading);
+          document.getElementById("resultat").style.display = "block";
+
+          if (code.length === 16) {
+            resultat.innerHTML = '<div class="result success">✅ <span>Code validé</span></div>';
+          } else {
+            resultat.innerHTML = '<div class="result error">❌ <span>Code non validé</span></div>';
+          }
+        }
+      }, 90); // 100 x 90ms = 9 secondes
+    }
+  </script>
+</body>
+</html>
