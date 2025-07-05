@@ -1,0 +1,59 @@
+
+body {
+  font-family: Arial, sans-serif;
+  background: white;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  text-align: center;
+  padding: 50px 20px;
+}
+input[type="text"] {
+  padding: 10px;
+  width: 250px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+button {
+  padding: 10px 20px;
+  background-color: #555;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+#loaderBar {
+  width: 0%;
+  height: 5px;
+  background: green;
+  margin: 10px auto;
+  display: none;
+  transition: width 0.3s ease;
+}
+#resultat {
+  margin-top: 20px;
+  font-size: 18px;
+}
+.result.success span {
+  color: green;
+  font-weight: bold;
+  text-decoration: underline;
+}
+.result.error span {
+  color: red;
+  font-weight: bold;
+}
+.info-zone {
+  padding: 30px;
+  background: #eee;
+  margin-top: 50px;
+}
+.emoji {
+  font-size: 40px;
+  text-align: center;
+}
+.text-box {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
